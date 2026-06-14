@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Secure Login{% endblock %}</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  :root{
+    --bg:#0c1118;
+    --panel:#131a26;
+    --border:#232f44;
+    --text:#dde6f0;
+    --muted:#6b7a94;
+    --accent:#5eead4;
+    --accent-dim:#2dd4bf;
+    --danger:#fb7185;
+    --success:#86efac;
+  }
+
+  body{
+    background:var(--bg);color:var(--text);
+    font-family:'Space Grotesk',sans-serif;
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    padding:2rem 1rem;
+  }
+
+  .auth-card{
+    width:100%;max-width:400px;background:var(--panel);
+    border:1px solid var(--border);border-radius:14px;
+    padding:2.25rem 2rem;
+  }
+
+  .brand{display:flex;align-items:center;gap:0.6rem;margin-bottom:1.75rem}
+  .brand svg{flex-shrink:0}
+  .brand-text{font-family:'JetBrains Mono',monospace;font-size:1.1rem;color:var(--accent);letter-spacing:0.05em}
+
+  h1{font-size:1.4rem;font-weight:600;margin-bottom:0.4rem}
+  .subtitle{color:var(--muted);font-size:0.85rem;margin-bottom:1.5rem}
+
+  .field{margin-bottom:1.1rem}
+  label{display:block;font-size:0.78rem;color:var(--muted);margin-bottom:0.4rem;letter-spacing:0.03em}
+  input{
+    width:100%;background:var(--bg);border:1.5px solid var(--border);
+    border-radius:8px;padding:0.7rem 0.875rem;color:var(--text);
+    font-family:inherit;font-size:0.95rem;outline:none;transition:border-color 0.2s;
+  }
+  input:focus{border-color:var(--accent)}
+
+  button.primary{
+    width:100%;background:var(--accent);color:#06231f;border:none;
+    border-radius:8px;padding:0.75rem;font-weight:600;font-size:0.95rem;
+    cursor:pointer;transition:background 0.2s;margin-top:0.5rem;
+  }
+  button.primary:hover{background:var(--accent-dim)}
+
+  .alt-link{text-align:center;margin-top:1.25rem;font-size:0.85rem;color:var(--muted)}
+  .alt-link a{color:var(--accent);text-decoration:none}
+  .alt-link a:hover{text-decoration:underline}
+
+  .flash{
+    padding:0.65rem 0.875rem;border-radius:7px;font-size:0.82rem;
+    margin-bottom:0.75rem;border:1px solid transparent;
+  }
+  .flash.error{background:rgba(251,113,133,0.1);border-color:rgba(251,113,133,0.3);color:var(--danger)}
+  .flash.success{background:rgba(134,239,172,0.1);border-color:rgba(134,239,172,0.3);color:var(--success)}
+
+  .hint{font-size:0.72rem;color:var(--muted);margin-top:0.35rem;line-height:1.5}
+
+  /* Dashboard specific */
+  .dashboard{max-width:520px}
+  .row{display:flex;justify-content:space-between;align-items:center;padding:0.75rem 0;border-bottom:1px solid var(--border)}
+  .row:last-child{border-bottom:none}
+  .row .label{color:var(--muted);font-size:0.85rem}
+  .row .value{font-family:'JetBrains Mono',monospace;font-size:0.85rem}
+  .badge{padding:0.2rem 0.6rem;border-radius:99px;font-size:0.7rem;font-weight:600;letter-spacing:0.05em}
+  .badge.on{background:rgba(134,239,172,0.12);color:var(--success)}
+  .badge.off{background:rgba(107,122,148,0.15);color:var(--muted)}
+  .btn-row{display:flex;gap:0.6rem;margin-top:1.5rem}
+  .btn-secondary{
+    flex:1;background:none;border:1.5px solid var(--border);color:var(--text);
+    border-radius:8px;padding:0.65rem;font-size:0.85rem;cursor:pointer;
+    font-family:inherit;text-decoration:none;text-align:center;transition:border-color 0.2s;
+  }
+  .btn-secondary:hover{border-color:var(--accent)}
+  .btn-danger{border-color:rgba(251,113,133,0.4);color:var(--danger)}
+  .btn-danger:hover{border-color:var(--danger)}
+
+  .qr-box{text-align:center;margin:1.25rem 0}
+  .qr-box img{border-radius:8px;border:1px solid var(--border)}
+  .secret-code{
+    font-family:'JetBrains Mono',monospace;font-size:0.8rem;
+    background:var(--bg);border:1px solid var(--border);border-radius:6px;
+    padding:0.6rem;text-align:center;word-break:break-all;color:var(--accent);margin:0.75rem 0;
+  }
+</style>
+</head>
+<body>
+<div class="auth-card {% block card_extra_class %}{% endblock %}">
+  <div class="brand">
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+      <path d="M13 2L3 6v6c0 6.5 4.5 10.5 10 12 5.5-1.5 10-5.5 10-12V6L13 2Z" stroke="#5eead4" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M9 13l3 3 5-6" stroke="#5eead4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="brand-text">SECURELOGIN</span>
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</div>
+</body>
+</html>

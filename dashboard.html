@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — SecureLogin{% endblock %}
+{% block card_extra_class %}dashboard{% endblock %}
+{% block content %}
+  <h1>Welcome, {{ user['username'] }}</h1>
+  <p class="subtitle">Account overview</p>
+
+  <div class="row">
+    <span class="label">Email</span>
+    <span class="value">{{ user['email'] }}</span>
+  </div>
+  <div class="row">
+    <span class="label">Two-Factor Authentication</span>
+    {% if user['totp_enabled'] %}
+      <span class="badge on">ENABLED</span>
+    {% else %}
+      <span class="badge off">DISABLED</span>
+    {% endif %}
+  </div>
+  <div class="row">
+    <span class="label">Password</span>
+    <span class="value">••••••••••</span>
+  </div>
+
+  <div class="btn-row">
+    {% if user['totp_enabled'] %}
+      <form method="POST" action="{{ url_for('disable_2fa') }}" style="flex:1">
+        <button type="submit" class="btn-secondary btn-danger" style="width:100%">Disable 2FA</button>
+      </form>
+    {% else %}
+      <a href="{{ url_for('setup_2fa') }}" class="btn-secondary">Enable 2FA</a>
+    {% endif %}
+    <a href="{{ url_for('logout') }}" class="btn-secondary">Log Out</a>
+  </div>
+{% endblock %}

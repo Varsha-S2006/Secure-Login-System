@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Log In — SecureLogin{% endblock %}
+{% block content %}
+  <h1>Welcome back</h1>
+  <p class="subtitle">Log in to your account</p>
+
+  <form method="POST" action="{{ url_for('login') }}">
+    <div class="field">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required autocomplete="username" autofocus>
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required autocomplete="current-password">
+    </div>
+    <button type="submit" class="primary">Log In</button>
+  </form>
+
+  <p class="alt-link">Don't have an account? <a href="{{ url_for('register') }}">Create one</a></p>
+{% endblock %}

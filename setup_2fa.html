@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Set Up 2FA — SecureLogin{% endblock %}
+{% block content %}
+  <h1>Set up two-factor authentication</h1>
+  <p class="subtitle">Scan this QR code with Google Authenticator, Authy, or a similar app</p>
+
+  <div class="qr-box">
+    <img src="data:image/png;base64,{{ qr_b64 }}" alt="2FA QR Code" width="200" height="200">
+  </div>
+
+  <div class="hint">Can't scan? Enter this code manually in your app:</div>
+  <div class="secret-code">{{ secret }}</div>
+
+  <form method="POST" action="{{ url_for('setup_2fa') }}">
+    <div class="field">
+      <label for="code">Enter the 6-digit code from your app</label>
+      <input type="text" id="code" name="code" required pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" autofocus>
+    </div>
+    <button type="submit" class="primary">Verify &amp; Enable 2FA</button>
+  </form>
+
+  <p class="alt-link"><a href="{{ url_for('dashboard') }}">Cancel</a></p>
+{% endblock %}

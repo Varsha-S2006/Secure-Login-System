@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Verify Code — SecureLogin{% endblock %}
+{% block content %}
+  <h1>Two-factor verification</h1>
+  <p class="subtitle">Enter the 6-digit code from your authenticator app</p>
+
+  <form method="POST" action="{{ url_for('verify_2fa') }}">
+    <div class="field">
+      <label for="code">Authentication code</label>
+      <input type="text" id="code" name="code" required pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" autofocus>
+    </div>
+    <button type="submit" class="primary">Verify</button>
+  </form>
+
+  <p class="alt-link"><a href="{{ url_for('login') }}">Back to login</a></p>
+{% endblock %}
